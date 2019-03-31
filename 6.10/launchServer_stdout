@@ -1,0 +1,33 @@
+#!/bin/bash
+# Bash shell script to launch the CatDV server and shut it down when Ctrl-C is pressed
+# This file is used under Mac OS X and Linux/Unix
+# Copyright (C) Square Box Systems Ltd. 2002-2014
+
+# Edit the following to the location of java, eg. /usr/java/default/bin/java
+JAVA=/usr/bin/java
+
+# Ensure current directory is where the script is as that's where we'll look for
+# the terminate_catdv lock file
+
+DIR=${0/\/launchServer_stdout/}
+cd $DIR
+
+[ -e terminate_catdv ] && rm -f terminate_catdv
+trap 'touch terminate_catdv; echo Interrupt received, requesting termination; wait $server' 1 2 3 15 
+
+dir=.
+
+# To increase server memory allocation (this shouldn't be necessary) change the following
+memory=1500m
+
+# If you get "Connection refused to host 127.0.0.1" when connecting to server from another
+# machine, remove the # and replace xxxx with the hostname or dotted IP address of this
+# server machine:
+#OPTIONS=-Djava.rmi.server.hostname=xxxxx
+
+$JAVA -cp lib/server.jar:lib/jaxp.jar:lib/crimson.jar:lib/jakarta-regexp-1.2.jar:lib/ecj-4.4.1.jar:lib/tomcat-embed-core.jar:lib/tomcat-embed-jasper.jar:lib/tomcat-embed-logging-juli.jar:lib/gwt-servlet.jar:lib/h2.jar:lib/ojdbc6.jar:lib/jtds-1.2.5.jar:lib/mariadb-java-client-1.1.7.jar -Djava.rmi.server.codebase=file:$dir/lib/server.jar -Djava.security.policy=java.policy -Djava.awt.headless=true -Xmx$memory $OPTIONS squarebox.catdv.server.CatDVServer $*  &
+echo "Started CatDV server, pid $!"
+echo $! > /var/run/catdv.pid
+
+server=$!
+wait $server
