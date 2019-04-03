@@ -7,4 +7,5 @@ xsetroot -solid grey
 # Fix to make GNOME work
 export XKL_XMODMAP_DISABLE=1
 #/etc/X11/Xsession
+icewm-session &
 bash /usr/local/catdvServer/controlPanel

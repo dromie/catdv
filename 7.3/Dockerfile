@@ -1,8 +1,8 @@
 #target: catdvserver:7.3.5p10
 FROM openjdk:8-jdk
+RUN apt-get update && apt-get install -y tightvncserver icewm && apt-get clean && rm -rf /var/lib/apt/lists/*
 ADD CatDVServer7.3.5p10.tgz /tmp
 RUN cp -r /tmp/CatDVServer7.3.5p10/catdvServer /usr/local/ 
-RUN apt-get update && apt-get install -y tightvncserver && apt-get clean && rm -rf /var/lib/apt/lists/*
 COPY launchServer_stdout /usr/local/catdvServer/
 RUN chmod +x /usr/local/catdvServer/launchServer && \
     chmod +x /usr/local/catdvServer/controlPanel && \
