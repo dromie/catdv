@@ -1,0 +1,16 @@
+[Unit]
+Description=CatDV Service
+After=docker.service
+Requires=docker.service
+After=docker.mysql.service
+Requires=docker.mysql.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop catdvserver7.4
+ExecStartPre=-/usr/bin/docker rm catdvserver7.4
+ExecStart=/usr/bin/docker run --name catdvserver7.4 --link docker.mysql.service:mysql --rm catdvserver:7.4.3
+
+[Install]
+WantedBy=multi-user.target

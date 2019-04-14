@@ -1,1 +1,2 @@
-wget http://www.squarebox.com/download/CatDVServer7.4.2.tgz 
+#wget http://www.squarebox.com/download/CatDVServer7.4.2.tgz 
+wget ftp://support.squarebox.com/pub/download/CatDVServer7.4.3p3.tgz
